@@ -1,0 +1,42 @@
+﻿@model IEnumerable< CRUD_emp_240424.Models.tblEmp>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div> 
+		<table>
+			<tr>
+				<td>ID</td>
+				<td>Name</td>
+				<td>Mobile</td>
+				<td></td>
+			</tr>
+			@{
+
+				foreach (var item in Model)
+				{
+					<tr>
+						<td>@Html.DisplayFor(x => item.id)</td>
+						<td>@Html.DisplayFor(x => item.name)</td>
+						<td>@Html.DisplayFor(x => item.mobile)</td>
+						<td>
+							@Html.ActionLink("Edit", "edit", "Employee", new { id = item.id }, new { @class = "btn" })|
+						   @Html.ActionLink("Delete", "Delete", "Employee", new { id = item.id }, new { @class = "btn" })
+							</td>
+					</tr>
+						}
+					
+				}
+
+			</table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+﻿@model CRUD_emp_240424.Models.tblEmp
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>edit Employee Info</title>
+</head>
+<body>
+	<h1>edit Employee Info</h1>
+	<div>
+		<table>
+			@using (Html.BeginForm("Edit", "Employee", FormMethod.Post))
+			{
+				<tr>
+					<td>@Html.LabelFor(x => x.id)</td>
+					<td>@Html.DisplayFor(x => x.id)</td>
+				</tr>
+				<tr>
+					<td>@Html.LabelFor(x => x.name)</td>
+					<td>@Html.EditorFor(x => x.name)</td>
+				</tr>
+				<tr>
+					<td>@Html.LabelFor(x => x.mobile)</td>
+					<td>@Html.EditorFor(x => x.mobile)</td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="Submit" /></td>
+					<td><input type="reset" value="reset" /></td>
+				</tr>
+			}
+
+		</table>
+	</div>
+</body>
+</html>
