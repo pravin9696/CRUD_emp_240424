@@ -1,0 +1,33 @@
+﻿@model IEnumerable<CRUD_emp_240424.Models.studentModelClass>
+@{
+    ViewBag.Title = "Index";
+}
+
+<table>
+	<tr >
+		<th>Roll</th>
+		<th>Name</th>
+		<th>Date of Birth</th>
+		<th>Gender</th>
+		<th>Dept ID</th>
+		<th>DeptName</th>
+		<th></th>
+	</tr>
+	@foreach (var item in Model)
+	{
+		<tr>
+			<td>@Html.DisplayFor(x => item.roll)</td>
+			<td>@Html.DisplayFor(x => item.name)</td>
+			<td>@Html.DisplayFor(x => item.DOB)</td>
+			<td>@Html.DisplayFor(x => item.gender)</td>
+			<td>@Html.DisplayFor(x => item.deptId)</td>
+			<td>@Html.DisplayFor(x => item.deptName)</td>
+			<td>
+				@Html.ActionLink("Edit", "Edit", new { id = item.id }, new { @class = "btn btn-success" })
+				@Html.ActionLink("Details", "Details", new { id = item.id }, new { @class = "btn btn-warning " })
+				@Html.ActionLink("Delete", "Delete", new { id = item.id }, new { @class = "btn btn-danger" })
+			</td>
+		</tr>
+	}
+</table>
+

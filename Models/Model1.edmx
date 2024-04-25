@@ -4,7 +4,14 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DB240224Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DB240224Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblDepartments">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="Dept" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="tblEmp">
           <Key>
             <PropertyRef Name="id" />
@@ -13,11 +20,74 @@
           <Property Name="name" Type="nvarchar" MaxLength="50" />
           <Property Name="mobile" Type="int" />
         </EntityType>
+        <EntityType Name="tblSalary">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="empid" Type="int" />
+          <Property Name="salary" Type="int" />
+        </EntityType>
+        <EntityType Name="tblStudent">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="roll" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" />
+          <Property Name="DOB" Type="date" />
+          <Property Name="gender" Type="nvarchar" MaxLength="50" />
+          <Property Name="deptId" Type="int" />
+        </EntityType>
+        <Association Name="FK_tblSalary_tblEmp">
+          <End Role="tblEmp" Type="Self.tblEmp" Multiplicity="0..1" />
+          <End Role="tblSalary" Type="Self.tblSalary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblEmp">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblSalary">
+              <PropertyRef Name="empid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblStudent_tblDepartments">
+          <End Role="tblDepartments" Type="Self.tblDepartments" Multiplicity="0..1" />
+          <End Role="tblStudent" Type="Self.tblStudent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblDepartments">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblStudent">
+              <PropertyRef Name="deptId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="sp_insert_emp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="mob" Type="numeric" Mode="In" />
+        </Function>
+        <Function Name="sp_select_all_emp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_update_emp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="mob" Type="numeric" Mode="In" />
+        </Function>
         <EntityContainer Name="DB240224ModelStoreContainer">
+          <EntitySet Name="tblDepartments" EntityType="Self.tblDepartments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblEmp" EntityType="Self.tblEmp" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblSalary" EntityType="Self.tblSalary" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblStudent" EntityType="Self.tblStudent" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tblSalary_tblEmp" Association="Self.FK_tblSalary_tblEmp">
+            <End Role="tblEmp" EntitySet="tblEmp" />
+            <End Role="tblSalary" EntitySet="tblSalary" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblStudent_tblDepartments" Association="Self.FK_tblStudent_tblDepartments">
+            <End Role="tblDepartments" EntitySet="tblDepartments" />
+            <End Role="tblStudent" EntitySet="tblStudent" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DB240224Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -28,10 +98,90 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="mobile" Type="Int32" />
+          <NavigationProperty Name="tblSalaries" Relationship="DB240224Model.FK_tblSalary_tblEmp" FromRole="tblEmp" ToRole="tblSalary" />
         </EntityType>
         <EntityContainer Name="DB240224Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="tblEmps" EntityType="Self.tblEmp" />
+          <EntitySet Name="tblSalaries" EntityType="DB240224Model.tblSalary" />
+          <AssociationSet Name="FK_tblSalary_tblEmp" Association="DB240224Model.FK_tblSalary_tblEmp">
+            <End Role="tblEmp" EntitySet="tblEmps" />
+            <End Role="tblSalary" EntitySet="tblSalaries" />
+          </AssociationSet>
+          <EntitySet Name="tblDepartments" EntityType="DB240224Model.tblDepartment" />
+          <EntitySet Name="tblStudents" EntityType="DB240224Model.tblStudent" />
+          <AssociationSet Name="FK_tblStudent_tblDepartments" Association="DB240224Model.FK_tblStudent_tblDepartments">
+            <End Role="tblDepartment" EntitySet="tblDepartments" />
+            <End Role="tblStudent" EntitySet="tblStudents" />
+          </AssociationSet>
+          <FunctionImport Name="sp_insert_emp">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="mob" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="sp_select_all_emp" ReturnType="Collection(DB240224Model.sp_select_all_emp_Result)" />
+          <FunctionImport Name="sp_update_emp">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="mob" Mode="In" Type="Decimal" />
+          </FunctionImport>
         </EntityContainer>
+        <EntityType Name="tblSalary">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="empid" Type="Int32" />
+          <Property Name="salary" Type="Int32" />
+          <NavigationProperty Name="tblEmp" Relationship="DB240224Model.FK_tblSalary_tblEmp" FromRole="tblSalary" ToRole="tblEmp" />
+        </EntityType>
+        <Association Name="FK_tblSalary_tblEmp">
+          <End Type="DB240224Model.tblEmp" Role="tblEmp" Multiplicity="0..1" />
+          <End Type="DB240224Model.tblSalary" Role="tblSalary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblEmp">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblSalary">
+              <PropertyRef Name="empid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblDepartment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="Dept" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblStudents" Relationship="DB240224Model.FK_tblStudent_tblDepartments" FromRole="tblDepartment" ToRole="tblStudent" />
+        </EntityType>
+        <EntityType Name="tblStudent">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="roll" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DOB" Type="DateTime" Precision="0" />
+          <Property Name="gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="deptId" Type="Int32" />
+          <NavigationProperty Name="tblDepartment" Relationship="DB240224Model.FK_tblStudent_tblDepartments" FromRole="tblStudent" ToRole="tblDepartment" />
+        </EntityType>
+        <Association Name="FK_tblStudent_tblDepartments">
+          <End Type="DB240224Model.tblDepartment" Role="tblDepartment" Multiplicity="0..1" />
+          <End Type="DB240224Model.tblStudent" Role="tblStudent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblDepartment">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tblStudent">
+              <PropertyRef Name="deptId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="sp_select_all_emp_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="mobile" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -47,6 +197,46 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="tblSalaries">
+            <EntityTypeMapping TypeName="DB240224Model.tblSalary">
+              <MappingFragment StoreEntitySet="tblSalary">
+                <ScalarProperty Name="salary" ColumnName="salary" />
+                <ScalarProperty Name="empid" ColumnName="empid" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblDepartments">
+            <EntityTypeMapping TypeName="DB240224Model.tblDepartment">
+              <MappingFragment StoreEntitySet="tblDepartments">
+                <ScalarProperty Name="Dept" ColumnName="Dept" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblStudents">
+            <EntityTypeMapping TypeName="DB240224Model.tblStudent">
+              <MappingFragment StoreEntitySet="tblStudent">
+                <ScalarProperty Name="deptId" ColumnName="deptId" />
+                <ScalarProperty Name="gender" ColumnName="gender" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="roll" ColumnName="roll" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_insert_emp" FunctionName="DB240224Model.Store.sp_insert_emp" />
+          <FunctionImportMapping FunctionImportName="sp_select_all_emp" FunctionName="DB240224Model.Store.sp_select_all_emp">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB240224Model.sp_select_all_emp_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_update_emp" FunctionName="DB240224Model.Store.sp_update_emp" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

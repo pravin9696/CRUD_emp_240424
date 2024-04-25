@@ -1,0 +1,40 @@
+﻿@model CRUD_emp_240424.Models.studentModelClass
+@{
+	ViewBag.Title = "Edit";
+}
+
+<h2>Edit Student Information</h2>
+@{ 
+	int? deptid = Model.deptId;
+}
+@using (Html.BeginForm("edit","multiTable",FormMethod.Post))
+{
+	<table>
+		<tr>
+			<td>@Html.DisplayFor(x => x.roll)</td>
+			<td>@Html.EditorFor(x => x.roll)</td>
+		</tr>
+		<tr>
+			<td>@Html.DisplayFor(x => x.name)</td>
+			<td>@Html.EditorFor(x => x.name)</td>
+		</tr>
+		<tr>
+			<td>@Html.DisplayFor(x => x.DOB)</td>
+			<td>@Html.EditorFor(x => x.DOB)</td>
+		</tr>
+		<tr>
+			<td>@Html.DisplayFor(x => x.gender)</td>
+			<td>@Html.EditorFor(x => x.gender)</td>
+		</tr>
+		<tr>
+			<td>@Html.DisplayFor(x => x.deptId)</td>
+			<td>@Html.DropDownListFor(x => x.deptId, new SelectList(ViewBag.depts, "id", "Dept"));</td>
+		</tr>
+		<tr>
+			<td><input type="submit" value="submit" class="btn btn-success"/></td>
+			<td><input type="reset" value="reset" class="btn btn-danger" /></td>
+		</tr>
+
+	</table>
+}
+

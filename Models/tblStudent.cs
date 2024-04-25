@@ -12,19 +12,15 @@ namespace CRUD_emp_240424.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class tblEmp
+    public partial class tblStudent
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tblEmp()
-        {
-            this.tblSalaries = new HashSet<tblSalary>();
-        }
-    
         public int id { get; set; }
+        public int roll { get; set; }
         public string name { get; set; }
-        public Nullable<int> mobile { get; set; }
+        public Nullable<System.DateTime> DOB { get; set; }
+        public string gender { get; set; }
+        public Nullable<int> deptId { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblSalary> tblSalaries { get; set; }
+        public virtual tblDepartment tblDepartment { get; set; }
     }
 }

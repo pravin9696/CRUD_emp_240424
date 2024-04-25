@@ -12,6 +12,8 @@ namespace CRUD_emp_240424.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class DB240224Entities : DbContext
     {
@@ -26,5 +28,43 @@ namespace CRUD_emp_240424.Models
         }
     
         public virtual DbSet<tblEmp> tblEmps { get; set; }
+        public virtual DbSet<tblSalary> tblSalaries { get; set; }
+        public virtual DbSet<tblDepartment> tblDepartments { get; set; }
+        public virtual DbSet<tblStudent> tblStudents { get; set; }
+    
+        public virtual int sp_insert_emp(string name, Nullable<decimal> mob)
+        {
+            var nameParameter = name != null ?
+                new ObjectParameter("name", name) :
+                new ObjectParameter("name", typeof(string));
+    
+            var mobParameter = mob.HasValue ?
+                new ObjectParameter("mob", mob) :
+                new ObjectParameter("mob", typeof(decimal));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_insert_emp", nameParameter, mobParameter);
+        }
+    
+        public virtual ObjectResult<sp_select_all_emp_Result> sp_select_all_emp()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_select_all_emp_Result>("sp_select_all_emp");
+        }
+    
+        public virtual int sp_update_emp(Nullable<int> id, string name, Nullable<decimal> mob)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            var nameParameter = name != null ?
+                new ObjectParameter("name", name) :
+                new ObjectParameter("name", typeof(string));
+    
+            var mobParameter = mob.HasValue ?
+                new ObjectParameter("mob", mob) :
+                new ObjectParameter("mob", typeof(decimal));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_update_emp", idParameter, nameParameter, mobParameter);
+        }
     }
 }

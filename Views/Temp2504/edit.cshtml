@@ -1,0 +1,54 @@
+﻿ @model CRUD_emp_240424.Models.tblStudent
+@{
+    ViewBag.Title = "edit";
+}
+
+<h2>edit student Info</h2>
+<div>
+	@{ 
+		string deptName = ((List<CRUD_emp_240424.Models.tblDepartment>)ViewBag.depts).First(x => x.id == Model.deptId).Dept;
+
+	}
+	<table>
+		@using (Html.BeginForm("Edit", "temp2504", FormMethod.Post))
+		{
+			<tr>
+				<td>@Html.LabelFor(x => x.id)</td>
+				<td>@Html.DisplayFor(x => x.id)</td>
+			</tr>
+			<tr>
+				<td>@Html.LabelFor(x => x.roll)</td>
+				<td>@Html.EditorFor(x => x.roll)</td>
+			</tr>
+			<tr>
+				<td>@Html.LabelFor(x => x.name)</td>
+				<td>@Html.EditorFor(x => x.name)</td>
+			</tr>
+			<tr>
+				<td>@Html.LabelFor(x => x.DOB)</td>
+				<td>@Html.EditorFor(x => x.DOB)</td>
+			</tr>
+
+
+			<tr>
+				<td>@Html.LabelFor(x => x.gender)</td>
+				<td>
+					@Html.DropDownListFor(x => x.gender, new SelectList(ViewBag.genders, "gender", "gender"))
+				</td>
+			</tr>
+
+			<tr>
+				<td>@Html.LabelFor(x => x.deptId)</td>
+				<td>
+					@Html.DropDownListFor(x => x.deptId, new SelectList(ViewBag.depts, "id", "Dept"), deptName)
+				</td>
+			</tr>
+			<tr>
+				<td><input type="submit" value="Submit" /></td>
+				<td><input type="reset" value="reset" /></td>
+			</tr>
+		}
+
+	</table>
+</div>
+

@@ -28,6 +28,19 @@
 					<td>@Html.LabelFor(x => x.mobile)</td>
 					<td>@Html.EditorFor(x => x.mobile)</td>
 				</tr>
+				@*<tr>
+					<td>@Html.LabelFor(x => x.gender)</td>
+					<td>
+						@Html.RadioButtonFor(x => x.gender, "Male")@Html.Label("Male")<br />
+						@Html.RadioButtonFor(x => x.gender, "FeMale")@Html.Label("FeMale")<br />
+					</td>
+				</tr>*@
+				<tr>
+					<td>@Html.LabelFor(x => x.gender)</td>
+					<td>
+						@Html.DropDownListFor(x=>x.gender,new SelectList(ViewBag.genders,"gender","gender"))
+					</td>
+				</tr>
 				<tr>
 					<td><input type="submit" value="Submit" /></td>
 					<td><input type="reset" value="reset" /></td>

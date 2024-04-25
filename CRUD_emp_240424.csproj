@@ -130,9 +130,12 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
+    <Compile Include="Controllers\MultiTableController.cs" />
+    <Compile Include="Controllers\Temp2504Controller.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\genderClass.cs" />
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -148,7 +151,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\sp_select_all_emp_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\studentModelClass.cs" />
+    <Compile Include="Models\tblDepartment.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tblEmp.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tblSalary.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tblStudent.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -221,6 +237,13 @@
     <Content Include="Views\Employee\Index.cshtml" />
     <Content Include="Views\Employee\Index1.cshtml" />
     <Content Include="Views\Employee\edit.cshtml" />
+    <Content Include="Views\Employee\setSalary.cshtml" />
+    <Content Include="Views\MultiTable\Index.cshtml" />
+    <Content Include="Views\MultiTable\Edit.cshtml" />
+    <Content Include="Views\Employee\details.cshtml" />
+    <Content Include="Views\Employee\delete1.cshtml" />
+    <Content Include="Views\Temp2504\Index.cshtml" />
+    <Content Include="Views\Temp2504\edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
